@@ -1,0 +1,55 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: epms-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${EPMS_SQL_PASSWORD:?Set EPMS_SQL_PASSWORD}"
+      MSSQL_PID: "Developer"
+    ports:
+      - "127.0.0.1:1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: epms-api
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_HTTP_PORTS: "8080"
+      DatabaseProvider: "SqlServer"
+      ConnectionStrings__SqlServer: "Server=sqlserver,1433;Database=EpmsDb;User Id=sa;Password=${EPMS_SQL_PASSWORD:?Set EPMS_SQL_PASSWORD};TrustServerCertificate=True"
+      Jwt__Key: "${EPMS_JWT_KEY:?Set EPMS_JWT_KEY}"
+      Demo__AdminPassword: "${EPMS_DEMO_ADMIN_PASSWORD:?Set EPMS_DEMO_ADMIN_PASSWORD}"
+      Demo__EmployeePassword: "${EPMS_DEMO_EMPLOYEE_PASSWORD:?Set EPMS_DEMO_EMPLOYEE_PASSWORD}"
+      Cors__AllowedOrigins__0: "http://localhost:3000"
+      Cors__AllowedOrigins__1: "http://localhost:5173"
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: on-failure
+
+  web:
+    build:
+      context: ./frontend/epms-web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "http://localhost:8080"
+    container_name: epms-web
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:3000:80"
+
+volumes:
+  sqlserver-data:

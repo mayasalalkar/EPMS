@@ -1,0 +1,112 @@
+:root {
+  --workspace-bg: #f3f6fb;
+  --workspace-border: #dee6f2;
+  --sidebar-width: 16rem;
+}
+
+body {
+  background: var(--workspace-bg);
+  color: #17243b;
+}
+
+.auth-page {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 2rem 1rem;
+  background: radial-gradient(ellipse at 10% 12%, #d7e8ff, transparent 53%), var(--workspace-bg);
+}
+
+.auth-card { max-width: 29rem; }
+.auth-card-wide { max-width: 42rem; }
+.login-page { display: grid; grid-template-columns: 1.1fr 1fr; min-height: 100dvh; }
+
+.login-overview {
+  display: grid;
+  align-items: center;
+  padding: clamp(2rem, 6vw, 6rem);
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 92% 10%, #3176d8 0%, transparent 52%),
+    radial-gradient(ellipse at 16% 96%, #1b4c9f 0%, transparent 50%),
+    #10234a;
+}
+
+.login-overview-content { width: 100%; max-width: 34rem; margin-inline: auto; }
+.login-overview .brand-logo { background: #e4efff; color: #16439e; }
+.login-overview .brand-subtitle { color: #d7e8ff !important; }
+.login-intro { margin-top: clamp(2.5rem, 9vh, 6rem); }
+.login-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.login-intro .login-eyebrow { color: #bdd9ff; }
+.login-headline { max-width: 12ch; font-size: clamp(2.7rem, 5.2vw, 5rem); font-weight: 700; line-height: 1.05; }
+.login-description { max-width: 38ch; color: #deebff; line-height: 1.65; }
+.login-features { display: grid; gap: .75rem; }
+.login-features li { display: flex; align-items: center; gap: .7rem; }
+.login-features i { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .55rem; background: #ffffff20; }
+.login-panel { display: grid; grid-template-rows: 1fr auto; justify-items: center; min-width: 0; padding: 2.5rem clamp(1.5rem, 5vw, 4rem) 1rem; background: #fff; }
+.login-form { align-self: center; width: 100%; max-width: 26rem; }
+.login-form h1 { font-weight: 700; }
+.login-footer { width: 100%; margin-top: 2rem; }
+
+@media (max-width: 767.98px) {
+  .login-page { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .login-overview { padding: 1.25rem 1.5rem; }
+  .login-intro { display: none; }
+  .login-panel { padding-top: 2rem; }
+}
+
+.card { border-radius: .9rem; }
+.workspace-panel { border-color: var(--workspace-border); box-shadow: 0 2px 6px #21386008; }
+.app-shell { display: flex; min-height: 100dvh; }
+.app-main { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.app-topbar { background: white; border-bottom: 1px solid var(--workspace-border); }
+.app-main > main { width: 100%; max-width: 92rem; margin-inline: auto; }
+
+.app-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 var(--sidebar-width);
+  height: 100dvh;
+  background: #fff;
+  border-right: 1px solid var(--workspace-border);
+}
+
+.sidebar-link {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  padding: .65rem .8rem;
+  border-radius: .55rem;
+  color: #36455e;
+  text-decoration: none;
+}
+
+.sidebar-link:hover, .sidebar-link:focus-visible { background: #eff4fc; color: #16439e; }
+.sidebar-link.active { background: #e7efff; color: #14449e; font-weight: 600; }
+.sidebar-heading { letter-spacing: .08em; }
+.brand-logo, .stat-icon, .empty-icon, .avatar { display: inline-grid; place-items: center; flex-shrink: 0; }
+.brand-logo { width: 2.4rem; height: 2.4rem; border-radius: .65rem; background: #1d51bc; color: white; }
+.brand-logo-lg { width: 3rem; height: 3rem; font-size: 1.25rem; }
+.brand-subtitle { font-size: .69rem; }
+.stat-icon, .empty-icon { width: 2.6rem; height: 2.6rem; border-radius: .7rem; font-size: 1.15rem; }
+.empty-icon { background: #e7efff; color: #204fa8; }
+.avatar { width: 2rem; height: 2rem; border-radius: 50%; font-weight: 600; font-size: .72rem; }
+.avatar-sm { width: 1.7rem; height: 1.7rem; }
+.avatar-group .avatar + .avatar { margin-left: -.3rem; }
+.avatar-group .avatar { border: 1px solid white; }
+.avatar-more { background: #e6ecf5; color: #2b3c58; }
+.status-chart { position: relative; height: 15rem; }
+.table thead th { background: #f7f9fd; white-space: nowrap; color: #344967; }
+.table-progress { min-width: 7rem; }
+.progress-thin { height: .45rem; }
+.progress-label { min-width: 2.6rem; text-align: right; }
+.employee-picker { max-height: 13rem; overflow: auto; border: 1px solid var(--workspace-border); border-radius: .55rem; }
+.picker-email { font-size: .78rem; }
+.app-backdrop { position: fixed; inset: 0; z-index: 1029; background: #15203566; }
+
+@media (max-width: 991.98px) {
+  .app-sidebar { position: fixed; inset: 0 auto 0 0; width: min(85vw, var(--sidebar-width)); z-index: 1030; }
+  .app-sidebar:not(.open) { visibility: hidden; transform: translateX(-100%); }
+}
